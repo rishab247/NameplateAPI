@@ -1,4 +1,4 @@
-2captcha-python==1.0.3
+waitress==1.4.4
 absl-py==0.10.0
 appdirs==1.4.4
 asgiref==3.2.10
