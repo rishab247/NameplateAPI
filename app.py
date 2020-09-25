@@ -73,6 +73,8 @@ def token_required(f):
 @app.route('/verify', methods=['POST'])
 def verify():
     try:
+
+        global browser
         app.logger.info('test4')
         # starting time
         start = time.time()
@@ -118,7 +120,9 @@ def About():
     return jsonify({'About': 'STUFFFF'}), 200
 
 
-
+option = webdriver.ChromeOptions()
+option.add_argument('headless')
+browser = webdriver.Chrome(options=option)
 
 if __name__ == '__main__':
     option = webdriver.ChromeOptions()
