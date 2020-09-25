@@ -53,8 +53,8 @@ chrome_options.add_argument("--proxy-bypass-list=*")
 def verify():
     try:
         chrome_options.add_argument('headless')
-
-        browser = webdriver.Chrome(options=chrome_options)
+        print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+        browser = webdriver.Chrome(options=chrome_options, executable_path=os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
         app.logger.info('test4')
         # starting time
         start = time.time()
