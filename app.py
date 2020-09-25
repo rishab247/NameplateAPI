@@ -133,7 +133,7 @@ def hello():
         # gdd.download_and_install()
 
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        browser = webdriver.Chrome(options=chrome_options,executable_path="home//home//site//wwwroot//driver//chromedriver")
+        browser = webdriver.Chrome(options=chrome_options,executable_path=os.path.abspath("chromedriver.exe"))
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
 
