@@ -4,6 +4,8 @@ from selenium import webdriver
 import base64
 import urllib.request
 import time
+import os
+from selenium.webdriver.chrome.options import Options
 
 
 app = Flask(__name__)
@@ -42,13 +44,17 @@ app = Flask(__name__)
 
 
 
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument('--no-proxy-server')
+chrome_options.add_argument("--proxy-server='direct://'")
+chrome_options.add_argument("--proxy-bypass-list=*")
 @app.route('/verify', methods=['POST'])
 def verify():
     try:
+        chrome_options.add_argument('headless')
 
-        option = webdriver.ChromeOptions()
-        option.add_argument('headless')
-        browser = webdriver.Chrome(options=option)
+        browser = webdriver.Chrome(options=chrome_options)
         app.logger.info('test4')
         # starting time
         start = time.time()
