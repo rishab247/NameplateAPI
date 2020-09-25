@@ -1,13 +1,8 @@
-import pypyodbc
 from flask import Flask, jsonify, request, make_response, logging
 import jwt
 import json
-import datetime
 from selenium import webdriver
-import sys
 import base64
-
-from webdrivermanager import GeckoDriverManager
 import urllib.request
 import time
 from functools import wraps
