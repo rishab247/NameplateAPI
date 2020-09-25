@@ -9,6 +9,8 @@ browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
 plateNumber = ""
 captchaAnswer = ""
 
+# captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+
 browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
 browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
 browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
