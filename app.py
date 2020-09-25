@@ -1,8 +1,8 @@
 # from flask import Flask, jsonify, request, make_response, logging
 # import json
 # from selenium import webdriver
-# import base64
-# import urllib.request
+import base64
+import urllib.request
 # import time
 # import os
 # from selenium.webdriver.chrome.options import Options
@@ -106,7 +106,7 @@
 #
 #     app.run(debug=True)
 
-
+from webdrivermanager import ChromeDriverManager
 from selenium import webdriver
 from flask import Flask
 from selenium.webdriver.chrome.options import Options
@@ -123,11 +123,36 @@ def hello():
     options.add_argument("enable-automation")
     options.add_argument("--disable-infobars")
     options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://www.google.com/")
-    element_text = driver.page_source
-    driver.quit()
-    return element_text
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--no-proxy-server')
+    chrome_options.add_argument("--proxy-server='direct://'")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    browser = webdriver.Chrome(options=chrome_options)
+
+
+    browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+    plateNumber = ""
+    captchaAnswer = ""
+
+    app.logger.info('test6')
+    # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
+    # print(time.time() - start)
+
+    app.logger.info('test6')
+    # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
+    img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
+    print(img)
+    # print(time.time() - start)
+    urllib.request.urlretrieve(img, "captcha.png")
+    z = base64.b64encode(urllib.request.urlopen(img).read())
+    # print(sys. getsizeof(browser))
+    return z
+
 
 if __name__ == '__main__':
-    serve(app,host = '0.0.0.0',port = 5000)
+    app.run(debug=True)
