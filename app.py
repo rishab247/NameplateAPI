@@ -84,7 +84,7 @@ def verify():
         # print(sys. getsizeof(browser))
         return jsonify({'msg': str(z[2:-1])}), 200
     except Exception as e :
-        return jsonify({'msg': str(e)}), 200
+        return jsonify({'msg': str(e),"path":str(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))}), 200
 
 
 @app.route('/getdetails', methods=['POST'])
