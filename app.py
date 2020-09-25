@@ -4,7 +4,7 @@
 import base64
 import urllib.request
 # import time
-# import os
+import os
 # from selenium.webdriver.chrome.options import Options
 #
 #
@@ -132,8 +132,8 @@ def hello():
         # gdd = ChromeDriverManager()
         # gdd.download_and_install()
 
-        print(1)
-        browser = webdriver.Chrome(options=chrome_options)
+        print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+        browser = webdriver.Chrome(options=chrome_options,executable_path=os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver'))
 
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
@@ -161,7 +161,7 @@ def hello():
         # print(sys. getsizeof(browser))
         return z
     except Exception as e :
-        return str(e)
+        return str(e)+str(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver'))
 
 
 if __name__ == '__main__':
