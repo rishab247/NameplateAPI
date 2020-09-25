@@ -128,7 +128,14 @@ def hello():
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
+    # gdd = ChromeDriverManager()
+    # gdd.download_and_install()
+
+    print(1)
     browser = webdriver.Chrome(options=chrome_options)
+
+    print(1)
+    # browser = webdriver.Chrome(options=chrome_options)
 
 
     browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
