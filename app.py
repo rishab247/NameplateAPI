@@ -1,40 +1,12 @@
 from flask import Flask, jsonify, request, make_response, logging
-import jwt
 import json
 from selenium import webdriver
 import base64
 import urllib.request
 import time
-from functools import wraps
+
 
 app = Flask(__name__)
-
-app.config[
-    'SECRET_KEY'] = 'supsd3123xdf3232c32s32a3s'
-
-
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-
-        token = request.args.get('token')
-        if not token:
-            return jsonify({'msg': 'token req', }), 401
-
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except:
-            return jsonify({'msg': 'token is not valid', }), 401
-        return f(data, *args, **kwargs)
-
-    return decorated
-
-
-
-
-
-
 
 
 
