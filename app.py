@@ -74,7 +74,9 @@ def token_required(f):
 def verify():
     try:
 
-        global browser
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        browser = webdriver.Chrome(options=option)
         app.logger.info('test4')
         # starting time
         start = time.time()
@@ -120,14 +122,8 @@ def About():
     return jsonify({'About': 'STUFFFF'}), 200
 
 
-option = webdriver.ChromeOptions()
-option.add_argument('headless')
-browser = webdriver.Chrome(options=option)
+
 
 if __name__ == '__main__':
-    option = webdriver.ChromeOptions()
-    option.add_argument('headless')
 
-    # print(time.time()-start)
-    browser = webdriver.Chrome(options=option)
     app.run(debug=True)
