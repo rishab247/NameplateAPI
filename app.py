@@ -116,49 +116,52 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("enable-automation")
-    options.add_argument("--disable-infobars")
-    options.add_argument("--disable-dev-shm-usage")
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-proxy-server')
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    # gdd = ChromeDriverManager()
-    # gdd.download_and_install()
+    try:
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("enable-automation")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-dev-shm-usage")
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument('--no-proxy-server')
+        chrome_options.add_argument("--proxy-server='direct://'")
+        chrome_options.add_argument("--proxy-bypass-list=*")
+        # gdd = ChromeDriverManager()
+        # gdd.download_and_install()
 
-    print(1)
-    browser = webdriver.Chrome(options=chrome_options)
+        print(1)
+        browser = webdriver.Chrome(options=chrome_options)
 
-    print(1)
-    # browser = webdriver.Chrome(options=chrome_options)
+        print(1)
+        # browser = webdriver.Chrome(options=chrome_options)
 
 
-    browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
-    plateNumber = ""
-    captchaAnswer = ""
+        browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+        plateNumber = ""
+        captchaAnswer = ""
 
-    app.logger.info('test6')
-    # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+        app.logger.info('test6')
+        # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
 
-    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
-    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
-    browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
-    # print(time.time() - start)
+        browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
+        browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
+        browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
+        # print(time.time() - start)
 
-    app.logger.info('test6')
-    # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
-    img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
-    print(img)
-    # print(time.time() - start)
-    urllib.request.urlretrieve(img, "captcha.png")
-    z = base64.b64encode(urllib.request.urlopen(img).read())
-    # print(sys. getsizeof(browser))
-    return z
+        app.logger.info('test6')
+        # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
+        img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
+        print(img)
+        # print(time.time() - start)
+        urllib.request.urlretrieve(img, "captcha.png")
+        z = base64.b64encode(urllib.request.urlopen(img).read())
+        # print(sys. getsizeof(browser))
+        return z
+    except Exception as e :
+        return str(e)
 
 
 if __name__ == '__main__':
