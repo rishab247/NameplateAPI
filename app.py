@@ -4,7 +4,7 @@ import jwt
 import json
 import datetime
 from selenium import webdriver
-import os
+import sys
 import base64
 
 from webdrivermanager import GeckoDriverManager
@@ -47,6 +47,38 @@ option.add_argument('headless')
 # print(time.time()-start)
 browser = webdriver.Chrome(options=option)
 
+@app.route('/start')
+def start():
+
+    # starting time
+    start = time.time()
+
+    print(time.time() - start)
+    browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+    print(time.time() - start)
+    plateNumber = ""
+    captchaAnswer = ""
+
+    # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
+    print(time.time() - start)
+
+    # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
+    img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
+    print(img)
+    print(time.time() - start)
+    urllib.request.urlretrieve(img, "captcha.png")
+    z = base64.b64encode(urllib.request.urlopen(img).read())
+    # print(sys. getsizeof(browser))
+    return jsonify({'msg': str(z)}), 200
+
+
+
+
+
 @app.route('/verify')
 def verify():
 
@@ -72,10 +104,17 @@ def verify():
     print(time.time() - start)
     urllib.request.urlretrieve(img, "captcha.png")
     z = base64.b64encode(urllib.request.urlopen(img).read())
-    return jsonify({'msg': str(z)}), 200
+    # print(sys. getsizeof(browser))
+    return jsonify({'msg': str(z[2:-1])}), 200
 
 
-@app.route('/About')
+@app.route('/getdetails', methods=['POST'])
+def getdetails():
+    jsondata = request.get_data().decode("utf-8")
+    jsondata = json.loads(jsondata)
+
+    return jsonify({'msg': jsondata['codez']}), 200
+@app.route('/')
 def About():
     return jsonify({'About': 'STUFFFF'}), 200
 
