@@ -1,11 +1,18 @@
 from selenium import webdriver
+# import cv2 as cv
+import urllib.request
+import time
+
+# starting time
+start = time.time()
 
 option = webdriver.ChromeOptions()
 option.add_argument('headless')
-
+# print(time.time()-start)
 browser = webdriver.Chrome(options=option)
+print(time.time()-start)
 browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
-
+print(time.time()-start)
 plateNumber = ""
 captchaAnswer = ""
 
@@ -14,6 +21,13 @@ captchaAnswer = ""
 browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
 browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
 browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
-browser.find_element_by_class_name("ui-button-text").click()
+print(time.time()-start)
+
+# browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
+img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
+print(img)
+print(time.time()-start)
+urllib.request.urlretrieve(img, "captcha.png")
+print(time.time()-start)
 print("Printing Title of the Wepage visited")
 print(browser.title)

@@ -3,13 +3,17 @@ from flask import Flask, jsonify, request, make_response, logging
 import jwt
 import json
 import datetime
+from selenium import webdriver
+import os
+from webdrivermanager import GeckoDriverManager
+import urllib.request
+import time
 from functools import wraps
 
 app = Flask(__name__)
 
 app.config[
     'SECRET_KEY'] = 'supsd3123xdf3232c32s32a3s'
-
 
 
 
@@ -31,8 +35,43 @@ def token_required(f):
 
 
 
-@app.route('/')
-def Start():
+
+
+
+
+
+option = webdriver.ChromeOptions()
+option.add_argument('headless')
+# print(time.time()-start)
+browser = webdriver.Chrome(options=option)
+
+@app.route('/verify')
+def verify():
+    # starting time
+    start = time.time()
+
+    print(time.time() - start)
+    browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+    print(time.time() - start)
+    plateNumber = ""
+    captchaAnswer = ""
+
+    # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
+    browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
+    print(time.time() - start)
+
+    # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
+    img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
+    print(img)
+    print(time.time() - start)
+    urllib.request.urlretrieve(img, "captcha.png")
+    print(time.time() - start)
+    print("Printing Title of the Wepage visited")
+    print(browser.title)
+
     return jsonify({'msg': 'Hello World!'}), 200
 
 
@@ -41,24 +80,11 @@ def About():
     return jsonify({'About': 'STUFFFF'}), 200
 
 
-# @app.route('/test')
-# @token_required
-# def test(data):
-#     query = "SELECT  *  FROM [dbo].[Status] where Euid = ? + ? "
-#     result = db.query(query,1 , [data['user'][:int(len(data['user'])/2)],data['user'][int(len(data['user'])/2):]])
-#     print(result)
-#     return jsonify({'Status': str(result)  }), 200
-
-@app.route('/Alert')
-def Alert():
-    return jsonify({'msg': 'Alert!'}), 200
 
 
-@app.route('/Verify', methods=['GET'])
-@token_required
-def Verify(data):
-    query = "SELECT  [Status] ,[HOD] FROM [dbo].[Status]where Euid = ? "
-    result = db.query(query, 0, [data['user']])
-    return jsonify({'Status': result[0],
-                    'Hod': result[1]}), 200
-
+if __name__ == '__main__':
+    option = webdriver.ChromeOptions()
+    option.add_argument('headless')
+    # print(time.time()-start)
+    browser = webdriver.Chrome(options=option)
+    app.run()
