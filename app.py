@@ -5,6 +5,8 @@ import json
 import datetime
 from selenium import webdriver
 import os
+import base64
+
 from webdrivermanager import GeckoDriverManager
 import urllib.request
 import time
@@ -47,6 +49,7 @@ browser = webdriver.Chrome(options=option)
 
 @app.route('/verify')
 def verify():
+
     # starting time
     start = time.time()
 
@@ -68,11 +71,8 @@ def verify():
     print(img)
     print(time.time() - start)
     urllib.request.urlretrieve(img, "captcha.png")
-    print(time.time() - start)
-    print("Printing Title of the Wepage visited")
-    print(browser.title)
-
-    return jsonify({'msg': 'Hello World!'}), 200
+    z = base64.b64encode(urllib.request.urlopen(img).read())
+    return jsonify({'msg': str(z)}), 200
 
 
 @app.route('/About')
@@ -85,6 +85,7 @@ def About():
 if __name__ == '__main__':
     option = webdriver.ChromeOptions()
     option.add_argument('headless')
+
     # print(time.time()-start)
     browser = webdriver.Chrome(options=option)
     app.run()
