@@ -114,6 +114,22 @@ from waitress import serve
 app = Flask(__name__)
 
 
+app = Flask(__name__)
+
+@app.route('/test')
+def hello_world():
+    chrome_options = Options()
+    print(2)
+    chrome_options.add_argument("--headless")
+    print(2)
+    browser = webdriver.Chrome(options=chrome_options)
+    print(2)
+    try:
+        browser.get('http://www.google.com')
+        print(2)
+        return(browser.title)
+    finally:
+        browser.quit()
 @app.route('/')
 def hello():
     try:
@@ -134,6 +150,7 @@ def hello():
 
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
         browser = webdriver.Chrome(options=chrome_options,executable_path=os.path.abspath("chromedriver.exe"))
+        browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
 
