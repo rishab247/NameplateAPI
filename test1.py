@@ -10,7 +10,7 @@ o.add_argument("--no-sandbox")
 o.add_argument("enable-automation")
 o.add_argument("--disable-infobars")
 o.add_argument("--disable-dev-shm-usage")
-browser = webdriver.Chrome( executable_path= r'/home/site/wwwroot/chromedriver2',options = o)
+browser = webdriver.Chrome( executable_path= r'/home/site/wwwroot/chromedriver.exe',options = o)
 try:
     browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
     print(browser.title)
