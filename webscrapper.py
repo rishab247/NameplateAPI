@@ -5,11 +5,12 @@ import time
 
 # starting time
 start = time.time()
+print(time.time()-start)
 
 option = webdriver.ChromeOptions()
 option.add_argument('headless')
-# print(time.time()-start)
-browser = webdriver.Chrome(options=option)
+print(time.time()-start)
+browser = webdriver.Chrome( executable_path= r'/mnt/d/SD(SE)/university-project/Nameplate project/chromedriver',options = option)
 print(time.time()-start)
 browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
 print(time.time()-start)

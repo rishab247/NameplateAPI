@@ -1,9 +1,10 @@
 from selenium import webdriver
 
 
-option = webdriver.ChromeOptions()
-option.add_argument('headless')
-# print(time.time()-start)
+options = webdriver.ChromeOptions()
 import os
 os.system('ls')
-browser = webdriver.Chrome( executable_path= r'/home/site/wwwroot/chromedriver1',options = option)
+browser = webdriver.Chrome( executable_path= r'/mnt/d/SD(SE)/university-project/Nameplate project/chromedriver1',options = options)
+browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+print(browser.title)
+browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys("[:-4]")
