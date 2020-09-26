@@ -148,7 +148,7 @@ def hello():
         # gdd.download_and_install()
 
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        browser = webdriver.Chrome(options=chrome_options,executable_path='/home/site/wwwroot/chromedriver.exe')
+        browser = webdriver.Chrome(options=chrome_options,executable_path='/home/site/wwwroot/chromedriver1')
         browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
@@ -176,7 +176,7 @@ def hello():
         # print(sys. getsizeof(browser))
         return z
     except Exception as e :
-        return str(e)+str(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver'))
+            return str(e)
 
 
 if __name__ == '__main__':
