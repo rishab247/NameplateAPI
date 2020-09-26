@@ -5,6 +5,7 @@ import base64
 import urllib.request
 # import time
 import os
+
 # from selenium.webdriver.chrome.options import Options
 #
 #
@@ -106,12 +107,10 @@ import os
 #
 #     app.run(debug=True)
 
-from webdrivermanager import ChromeDriverManager
 from selenium import webdriver
 from flask import Flask
 from selenium.webdriver.chrome.options import Options
 from waitress import serve
-app = Flask(__name__)
 
 
 app = Flask(__name__)
@@ -149,7 +148,7 @@ def hello():
         # gdd.download_and_install()
 
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        browser = webdriver.Chrome(options=chrome_options,executable_path=os.path.abspath("chromedriver.exe"))
+        browser = webdriver.Chrome(options=chrome_options,executable_path='/home/site/wwwroot/chromedriver.exe')
         browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
@@ -181,4 +180,16 @@ def hello():
 
 
 if __name__ == '__main__':
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--no-proxy-server')
+    chrome_options.add_argument("--proxy-server='direct://'")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    # gdd = ChromeDriverManager()
+    # gdd.download_and_install()
+
+    browser = webdriver.Chrome(options=chrome_options,
+                               executable_path=os.path.join(os.path.join(os.path.dirname(__file__), 'driver'),
+                                                            'chromedriver.exe'))
+    print(22)
     app.run(debug=True)
