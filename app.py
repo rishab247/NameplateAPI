@@ -148,7 +148,7 @@ def hello():
         # gdd.download_and_install()
 
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        browser = webdriver.Chrome(options=chrome_options,executable_path='/home/site/wwwroot/chromedriver')
+        browser = webdriver.Chrome(options=chrome_options,executable_path='/home/site/wwwroot/chromedriver2')
         browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
