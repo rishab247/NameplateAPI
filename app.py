@@ -180,16 +180,5 @@ def hello():
 
 
 if __name__ == '__main__':
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-proxy-server')
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    # gdd = ChromeDriverManager()
-    # gdd.download_and_install()
-
-    browser = webdriver.Chrome(options=chrome_options,
-                               executable_path=os.path.join(os.path.join(os.path.dirname(__file__), 'driver'),
-                                                            'chromedriver.exe'))
     print(22)
     app.run(debug=True)
