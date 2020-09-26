@@ -110,7 +110,7 @@ import os
 from selenium import webdriver
 from flask import Flask
 from selenium.webdriver.chrome.options import Options
-from waitress import serve
+
 
 
 app = Flask(__name__)
