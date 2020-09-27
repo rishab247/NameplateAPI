@@ -144,7 +144,7 @@ def hello():
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
 
-
+        global browser
         browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
         plateNumber = ""
         captchaAnswer = ""
