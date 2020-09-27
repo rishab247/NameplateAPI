@@ -168,7 +168,6 @@ def hello():
         urllib.request.urlretrieve(img, "captcha.png")
         z = base64.b64encode(urllib.request.urlopen(img).read())
         # print(sys. getsizeof(browser))
-        browser.quit()
         return z
     except Exception as e :
             return str(e)
