@@ -130,6 +130,9 @@ def hello_world():
         return(browser.title)
     finally:
         browser.quit()
+
+        
+browser = webdriver.Chrome(options=chrome_options)
 @app.route('/')
 def hello():
     try:
