@@ -5,7 +5,8 @@ import base64
 import urllib.request
 # import time
 import os
-
+GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 # from selenium.webdriver.chrome.options import Options
 #
 #
@@ -146,9 +147,9 @@ def hello():
         chrome_options.add_argument("--proxy-bypass-list=*")
         # gdd = ChromeDriverManager()
         # gdd.download_and_install()
-
+        chrome_options.binary_location = GOOGLE_CHROME_PATH
         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        browser = webdriver.Chrome(options=chrome_options,executable_path='/app/chromedriver2')
+        browser = webdriver.Chrome(options=chrome_options,executable_path=CHROMEDRIVER_PATH)
         browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
