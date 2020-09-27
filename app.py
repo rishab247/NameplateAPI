@@ -113,7 +113,17 @@ from flask import Flask
 from selenium.webdriver.chrome.options import Options
 
 
-
+class xxx:
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--no-proxy-server')
+    chrome_options.add_argument("--proxy-server='direct://'")
+    chrome_options.add_argument("--proxy-bypass-list=*")
+    # gdd = ChromeDriverManager()
+    # gdd.download_and_install()
+    #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+    print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+    browser = webdriver.Chrome(options=chrome_options)
 app = Flask(__name__)
 
 @app.route('/test')
@@ -133,22 +143,15 @@ def hello_world():
 @app.route('/')
 def hello():
     try:
-
-#         chrome_options = Options()
-#         chrome_options.add_argument("--headless")
-#         chrome_options.add_argument('--no-proxy-server')
-#         chrome_options.add_argument("--proxy-server='direct://'")
-#         chrome_options.add_argument("--proxy-bypass-list=*")
-#         # gdd = ChromeDriverManager()
-#         # gdd.download_and_install()
-# #         chrome_options.binary_location = GOOGLE_CHROME_PATH
-#         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-#         browser = webdriver.Chrome(options=chrome_options)
-#         browser.implicitly_wait(10)
-        print(1)
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("enable-automation")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-dev-shm-usage")
+        browser =xxx.browser
         # browser = webdriver.Chrome(options=chrome_options)
-
-        global browser
         browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
         plateNumber = ""
         captchaAnswer = ""
@@ -169,7 +172,7 @@ def hello():
         urllib.request.urlretrieve(img, "captcha.png")
         z = base64.b64encode(urllib.request.urlopen(img).read())
         # print(sys. getsizeof(browser))
-        
+        # browser.quit()
         return z
     except Exception as e :
             return str(e)
@@ -177,15 +180,5 @@ def hello():
 
 if __name__ == '__main__':
     print(22)
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-proxy-server')
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    # gdd = ChromeDriverManager()
-    # gdd.download_and_install()
-    #         chrome_options.binary_location = GOOGLE_CHROME_PATH
-    # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
 
-    browser = webdriver.Chrome(options=chrome_options)
     app.run(debug=True)
