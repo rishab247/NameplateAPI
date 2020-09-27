@@ -1,5 +1,5 @@
-# from flask import Flask, jsonify, request, make_response, logging
-# import json
+from flask import Flask, jsonify, request, make_response, logging
+import json
 # from selenium import webdriver
 import base64
 import urllib.request
@@ -109,7 +109,7 @@ CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 #     app.run(debug=True)
 
 from selenium import webdriver
-from flask import Flask
+# from flask import Flask
 from selenium.webdriver.chrome.options import Options
 
 
@@ -124,7 +124,13 @@ class xxx:
     #         chrome_options.binary_location = GOOGLE_CHROME_PATH
     print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
     browser = webdriver.Chrome(options=chrome_options)
+    dic = {}
+    id =0
+
+
+    b = webdriver.Chrome(options=chrome_options)
 app = Flask(__name__)
+
 
 @app.route('/test')
 def hello_world():
@@ -137,11 +143,14 @@ def hello_world():
     try:
         browser.get('http://www.google.com')
         print(2)
-        return(browser.title)
+        return (browser.title)
     finally:
         browser.quit()
+
+
+
 @app.route('/')
-def hello():
+def getcaption():
     try:
         options = Options()
         options.add_argument("--headless")
@@ -163,7 +172,6 @@ def hello():
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
         browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
         # print(time.time() - start)
-
         app.logger.info('test6')
         # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
         img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
@@ -173,12 +181,29 @@ def hello():
         z = base64.b64encode(urllib.request.urlopen(img).read())
         # print(sys. getsizeof(browser))
         # browser.quit()
-        return z
+        xxx.id+=1
+        if(xxx.id>=100):
+            xxx.id = 0
+        xxx.dic[xxx.id] = browser
+        return jsonify({'msg': str(z)[2:-1],'id': str(xxx.id)}), 200
     except Exception as e :
-            return str(e)
+            return jsonify({'msg': str(e)}), 200
 
+
+@app.route('/test20',methods=['POST'])
+def hello_world22():
+    jsondata = request.get_data().decode("utf-8")
+    jsondata = json.loads(jsondata)
+
+    browser = xxx.dic[jsondata['id']]
+
+    return 122
 
 if __name__ == '__main__':
+
     print(22)
+    for i in range(101):
+        xxx.dic[i] = 0
+
 
     app.run(debug=True)
