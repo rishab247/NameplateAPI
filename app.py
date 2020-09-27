@@ -130,20 +130,21 @@ def hello_world():
         return(browser.title)
     finally:
         browser.quit()
-
-        
-browser = webdriver.Chrome(options=chrome_options)
 @app.route('/')
 def hello():
     try:
-        # chrome_options = Options()
-        # chrome_options.add_argument("--headless")
-        # chrome_options.add_argument('--no-proxy-server')
-        # chrome_options.add_argument("--proxy-server='direct://'")
-        # chrome_options.add_argument("--proxy-bypass-list=*")
-        # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-        # browser = webdriver.Chrome(options=chrome_options)
-        # browser.implicitly_wait(10)
+
+#         chrome_options = Options()
+#         chrome_options.add_argument("--headless")
+#         chrome_options.add_argument('--no-proxy-server')
+#         chrome_options.add_argument("--proxy-server='direct://'")
+#         chrome_options.add_argument("--proxy-bypass-list=*")
+#         # gdd = ChromeDriverManager()
+#         # gdd.download_and_install()
+# #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+#         print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+#         browser = webdriver.Chrome(options=chrome_options)
+#         browser.implicitly_wait(10)
         print(1)
         # browser = webdriver.Chrome(options=chrome_options)
 
@@ -168,19 +169,23 @@ def hello():
         urllib.request.urlretrieve(img, "captcha.png")
         z = base64.b64encode(urllib.request.urlopen(img).read())
         # print(sys. getsizeof(browser))
+        
         return z
     except Exception as e :
             return str(e)
 
 
 if __name__ == '__main__':
+    print(22)
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
-    print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-    global browser
-    browser = webdriver.Chrome(options=chrome_options)
+    # gdd = ChromeDriverManager()
+    # gdd.download_and_install()
+    #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+    # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
 
+    browser = webdriver.Chrome(options=chrome_options)
     app.run(debug=True)
