@@ -192,18 +192,29 @@ def getcaption():
 
 @app.route('/test20',methods=['POST'])
 def hello_world22():
-    jsondata = request.get_data().decode("utf-8")
-    jsondata = json.loads(jsondata)
+    print(111)
+    try:
+        json_data = request.json
+        print(222)
+        a_value = int(json_data["id"])
+        ans =  str(json_data["ans"])
+        print( 1)
+        if (a_value < 0 or a_value > 100):
+            raise Exception("Wronge id")
 
-    browser = xxx.dic[jsondata['id']]
+        if (xxx.dic[a_value] == 0):
+            raise Exception("Wronge id")
 
-    return 122
+        if (ans == ""):
+            raise Exception("Wronge ans")
+
+        return jsonify({'msg': str(a_value)}), 200
+    except Exception as e :
+        return jsonify({'msg': str(e)}), 200
 
 if __name__ == '__main__':
 
-    print(22)
     for i in range(101):
         xxx.dic[i] = 0
-
-
+    print(xxx.dic)
     app.run(debug=True)
