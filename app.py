@@ -355,7 +355,10 @@ def shutdownlitener():
 
 
 for i in range(2):
-    data.store[i] = data.new(data)
+    try:
+        data.store[i] = data.new(data)
+    except:
+        pass
 if __name__ == '__main__':
 
 
