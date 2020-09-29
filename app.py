@@ -354,14 +354,11 @@ def shutdownlitener():
             pass
 
 
-for i in range(2):
-    try:
-        data.store[i] = data.new(data)
-    except:
-        pass
+
 if __name__ == '__main__':
 
-
+    for i in range(2):
+        data.store[i] = data.new(data)
     # print(data.store)
     # print(dic)
     # chrome_options = Options()
