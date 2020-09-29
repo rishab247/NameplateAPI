@@ -41,12 +41,8 @@ img_captcha_base64 = browser.execute_async_script("""
 
 with open(r"captcha.jpg", 'wb') as f:
     f.write(base64.b64decode(img_captcha_base64))
-
+captchaAnswer = input()
 browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
-print('Enter captcha')
-
-time.sleep(10)
-
 browser.find_element_by_class_name("ui-button-text").click()
 
 time.sleep(1)

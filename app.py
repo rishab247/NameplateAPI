@@ -1,5 +1,12 @@
-from flask import Flask, jsonify, request, make_response, logging
+from flask import Flask, jsonify, request, make_response, logging, g
 import json
+import atexit
+import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from data import dataclass as data
 # from selenium import webdriver
 import base64
 import urllib.request
@@ -113,23 +120,23 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-class xxx:
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-proxy-server')
-    chrome_options.add_argument("--proxy-server='direct://'")
-    chrome_options.add_argument("--proxy-bypass-list=*")
-    # gdd = ChromeDriverManager()
-    # gdd.download_and_install()
-    #         chrome_options.binary_location = GOOGLE_CHROME_PATH
-    print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-    browser = webdriver.Chrome(options=chrome_options)
-    dic = {}
-    id =0
+# class xxx:
+#     chrome_options = Options()
+#     # chrome_options.add_argument("--headless")
+#     chrome_options.add_argument('--no-proxy-server')
+#     chrome_options.add_argument("--proxy-server='direct://'")
+#     chrome_options.add_argument("--proxy-bypass-list=*")
+#     # gdd = ChromeDriverManager()
+#     # gdd.download_and_install()
+#     #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+#     print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+#     browser = webdriver.Chrome(options=chrome_options)
 
 
-    b = webdriver.Chrome(options=chrome_options)
+
+
 app = Flask(__name__)
+dic = {}
 
 
 @app.route('/test')
@@ -147,74 +154,217 @@ def hello_world():
     finally:
         browser.quit()
 
+# chrome_options = Options()
+# # chrome_options.add_argument("--headless")
+# chrome_options.add_argument('--no-proxy-server')
+# chrome_options.add_argument("--proxy-server='direct://'")
+# chrome_options.add_argument("--proxy-bypass-list=*")
+# # gdd = ChromeDriverManager()
+# # gdd.download_and_install()
+# #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+# print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+# browser = webdriver.Chrome(options=chrome_options)
 
 
-@app.route('/')
-def getcaption():
+@app.route('/',methods=['POST'])
+def getcaption(  ):
     try:
-        options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("enable-automation")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--disable-dev-shm-usage")
-        browser =xxx.browser
-        # browser = webdriver.Chrome(options=chrome_options)
+        json_data = request.json
+         # browser = webdriver.Chrome(options=chrome_options)
+        # global browser
+        browser = data.browser
         browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
-        plateNumber = ""
-        captchaAnswer = ""
-
-        app.logger.info('test6')
-        # captcha selector tag : //*[@id="form_rcdl:j_idt32:j_idt37"]
+        plateNumber =json_data['nameplateno']
 
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
-        browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
-        # print(time.time() - start)
-        app.logger.info('test6')
-        # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').
-        img = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]').get_attribute('src')
-        print(img)
-        # print(time.time() - start)
-        urllib.request.urlretrieve(img, "captcha.png")
-        z = base64.b64encode(urllib.request.urlopen(img).read())
+        captcha = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]')
+        img_captcha_base64 = browser.execute_async_script("""
+             var ele = arguments[0], callback = arguments[1];
+             ele.addEventListener('load', function fn(){
+               ele.removeEventListener('load', fn, false);
+               var cnv = document.createElement('canvas');
+               cnv.width = this.width; cnv.height = this.height;
+               cnv.getContext('2d').drawImage(this, 0, 0);
+               callback(cnv.toDataURL('image/jpeg').substring(22));
+             }, false);
+             ele.dispatchEvent(new Event('load'));
+             """, captcha)
+
+
         # print(sys. getsizeof(browser))
         # browser.quit()
-        xxx.id+=1
-        if(xxx.id>=100):
-            xxx.id = 0
-        xxx.dic[xxx.id] = browser
-        return jsonify({'msg': str(z)[2:-1],'id': str(xxx.id)}), 200
+        # xxx.id+=1
+        # if(xxx.id>=100):
+        #     xxx.id = 0
+        # dic[xxx.id] = browser
+        # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys("ans")
+        # browser.find_element_by_class_name("ui-button-text").click()
+        data.browser = browser
+        return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str("xxx.id" )}),200
     except Exception as e :
             return jsonify({'msg': str(e)}), 200
 
 
-@app.route('/test20',methods=['POST'])
-def hello_world22():
+@app.route('/getdata',methods=['POST'])
+def getdata():
     print(111)
     try:
         json_data = request.json
-        print(222)
+
         a_value = int(json_data["id"])
         ans =  str(json_data["ans"])
-        print( 1)
+        print( ans)
         if (a_value < 0 or a_value > 100):
             raise Exception("Wronge id")
 
-        if (xxx.dic[a_value] == 0):
-            raise Exception("Wronge id")
+        # if (dic[a_value] == 0):
+        #     raise Exception("Wronge id")
 
         if (ans == ""):
             raise Exception("Wronge ans")
 
-        return jsonify({'msg': str(a_value)}), 200
+        # global browser
+        browser = data.browser
+        print(browser.title)
+
+        browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(ans)
+        browser.find_element_by_class_name("ui-button-text").click()
+
+        try:
+            time.sleep(0.3)
+            browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt14"]/div')
+            raise  Exception('Invalid Captcha!')
+        except:
+            print("pass")
+            pass
+
+        registrationNumber = ""
+        registrationDate = ""
+        chassisNumber = ""
+        engineNumber = ""
+        ownerName = ""
+        vehicleClass = ""
+        fuelType = ""
+        makerOrModel = ""
+        fitnessUpto = ""
+        insuranceUpto = ""
+        fuelNorms = ""
+        roadTaxPaidUpto = ""
+        nocDetails = ""
+
+        try:
+            x = WebDriverWait(browser, 2).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]')))
+        except TimeoutException:
+            raise  Exception('Invalid Car Number Plate!')
+
+        except:
+            raise  Exception('An Error Occurred!')
+
+        try:
+            registrationNumber = browser.find_element_by_xpath(
+                '//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]').text
+        except:
+            pass
+
+        try:
+            registrationDate = browser.find_element_by_xpath(
+                '//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[4]').text
+        except:
+            pass
+
+        try:
+            chassisNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[2]').text
+        except:
+            pass
+
+        try:
+            engineNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[4]').text
+        except:
+            pass
+
+        try:
+            ownerName = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[3]/td[2]').text
+        except:
+            pass
+
+        try:
+            vehicleClass = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[2]').text
+        except:
+            pass
+
+        try:
+            fuelType = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[4]').text
+        except:
+            pass
+
+        try:
+            makerOrModel = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[5]/td[2]').text
+        except:
+            pass
+
+        try:
+            fitnessUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[2]').text
+        except:
+            pass
+
+        try:
+            insuranceUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[4]').text
+        except:
+            pass
+
+        try:
+            fuelNorms = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[2]').text
+        except:
+            pass
+
+        try:
+            roadTaxPaidUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[4]').text
+        except:
+            pass
+
+        try:
+            nocDetails = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[8]/td[2]').text
+        except:
+            pass
+
+        return jsonify({'msg': str(a_value),
+                        'registrationNumber':registrationNumber,
+                        'registrationDate':registrationDate,
+                        'chassisNumber':chassisNumber,
+                        'engineNumber':engineNumber,
+                        'ownerName':ownerName,
+                        'makerOrModel':makerOrModel,
+                        'vehicleClass':vehicleClass,
+                        'fuelType':fuelType,
+                        'fitnessUpto':fitnessUpto,
+                        'insuranceUpto':insuranceUpto,
+                        'fuelNorms':fuelNorms,
+                        'roadTaxPaidUpto':roadTaxPaidUpto,
+                        'nocDetails':nocDetails
+                        }), 200
     except Exception as e :
         return jsonify({'msg': str(e)}), 200
+def shutdownlitener():
+    data.browser.close()
+
 
 if __name__ == '__main__':
 
     for i in range(101):
-        xxx.dic[i] = 0
-    print(xxx.dic)
+        dic[i] = 0
+    # print(dic)
+    # chrome_options = Options()
+    # # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument('--no-proxy-server')
+    # chrome_options.add_argument("--proxy-server='direct://'")
+    # chrome_options.add_argument("--proxy-bypass-list=*")
+    # # gdd = ChromeDriverManager()
+    # # gdd.download_and_install()
+    # #         chrome_options.binary_location = GOOGLE_CHROME_PATH
+    # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+    # browser = webdriver.Chrome(options=chrome_options)
+    atexit.register(shutdownlitener)
+
     app.run(debug=True)
