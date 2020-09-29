@@ -142,11 +142,12 @@ def getcaption(  ):
          # browser = webdriver.Chrome(options=chrome_options)
         # global browser
         print( data.id )
-        print(data.store[data.id])
+        # print(data.store[data.id])
         # print(2)
-        browser = data.store[data.id]
         # print(2)
         try:
+            browser = data.store[data.id]
+
             browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
         except:
             print('break')
@@ -187,7 +188,7 @@ def getcaption(  ):
         # browser.find_element_by_class_name("ui-button-text").click()
         return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str(data.id-1)}),200
     except Exception as e :
-            return jsonify({'msg': str(e)}), 200
+            return jsonify({'msg': 'error: '+ str(e)}), 200
 
 
 @app.route('/getdata',methods=['POST'])
