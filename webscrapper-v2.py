@@ -64,17 +64,65 @@ except:
 
 try:
     registrationNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]').text
+except:
+    pass
+
+try:
     registrationDate = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[4]').text
+except:
+    pass
+
+try:
     chassisNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[2]').text
+except:
+    pass
+
+try:
     engineNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[4]').text
+except:
+    pass
+
+try:
     ownerName = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[3]/td[2]').text
+except:
+    pass
+
+try:
     vehicleClass = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[2]').text
+except:
+    pass
+
+try:
     fuelType = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[4]').text
+except:
+    pass
+
+try:
     makerOrModel = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[5]/td[2]').text
+except:
+    pass
+
+try:
     fitnessUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[2]').text
+except:
+    pass
+
+try:
     insuranceUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[4]').text
+except:
+    pass
+
+try:
     fuelNorms = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[2]').text
+except:
+    pass
+
+try:
     roadTaxPaidUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[4]').text
+except:
+    pass
+
+try:
     nocDetails = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[8]/td[2]').text
 except:
     pass
@@ -92,4 +140,3 @@ print(insuranceUpto)
 print(fuelNorms)
 print(roadTaxPaidUpto)
 print(nocDetails)
-
