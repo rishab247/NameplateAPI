@@ -353,7 +353,7 @@ def shutdownlitener():
 if __name__ == '__main__':
 
     for i in range(101):
-        dic[i] = 0
+        data.store[i] = data.new()
     # print(dic)
     # chrome_options = Options()
     # # chrome_options.add_argument("--headless")
