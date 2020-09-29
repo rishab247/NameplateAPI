@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import time
+import base64
 import os
 
 option = webdriver.ChromeOptions()
@@ -23,6 +24,24 @@ browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plate
 print('Entering first part:',plateNumber[:-4])
 browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
 print('Entering second part:',plateNumber[-4:])
+
+captcha = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]')
+
+img_captcha_base64 = browser.execute_async_script("""
+    var ele = arguments[0], callback = arguments[1];
+    ele.addEventListener('load', function fn(){
+      ele.removeEventListener('load', fn, false);
+      var cnv = document.createElement('canvas');
+      cnv.width = this.width; cnv.height = this.height;
+      cnv.getContext('2d').drawImage(this, 0, 0);
+      callback(cnv.toDataURL('image/jpeg').substring(22));
+    }, false);
+    ele.dispatchEvent(new Event('load'));
+    """, captcha)
+
+with open(r"captcha.jpg", 'wb') as f:
+    f.write(base64.b64decode(img_captcha_base64))
+
 browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(captchaAnswer)
 print('Enter captcha')
 
