@@ -128,6 +128,8 @@ dic = {}
 
 @app.route('/',methods=['POST'])
 def getcaption(  ):
+    if (data.id == 3):
+        data.id = 0
     try:
 
         json_data = request.json
@@ -141,9 +143,9 @@ def getcaption(  ):
         # global browser
         print( data.id )
         print(data.store[data.id])
-        print(2)
+        # print(2)
         browser = data.store[data.id]
-        print(2)
+        # print(2)
         try:
             browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
         except:
@@ -151,12 +153,12 @@ def getcaption(  ):
             browser = data.new()
             browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
 
-        print(3)
+        # print(3)
 
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
         captcha = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]')
-        print(4)
+        # print(4)
         img_captcha_base64 = browser.execute_async_script("""
              var ele = arguments[0], callback = arguments[1];
              ele.addEventListener('load', function fn(){
@@ -170,15 +172,19 @@ def getcaption(  ):
              """, captcha)
 
 
-        print(1)
+        # print(1)
         # browser.quit()
-        data.id+=1
-        if(data.id>=4):
+        data.store[data.id] = browser
+
+        # data.id+=1
+        if(data.id==3):
             data.id = 1
-        # dic[xxx.id] = browser
+        else:
+            data.id += 1
+        print((data.id))
+         # dic[xxx.id] = browser
         # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys("ans")
         # browser.find_element_by_class_name("ui-button-text").click()
-        data.store[data.id-1] = browser
         return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str(data.id-1)}),200
     except Exception as e :
             return jsonify({'msg': str(e)}), 200
@@ -348,7 +354,7 @@ def shutdownlitener():
 
 if __name__ == '__main__':
 
-    for i in range(4):
+    for i in range(3):
         data.store[i] = data.new()
     print(data.store)
     # print(dic)
