@@ -6,7 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from data import dataclass as data
+from data import dataclass as datad
+data = datad()
 # from selenium import webdriver
 import base64
 import urllib.request
@@ -120,65 +121,42 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-# class xxx:
-#     chrome_options = Options()
-#     # chrome_options.add_argument("--headless")
-#     chrome_options.add_argument('--no-proxy-server')
-#     chrome_options.add_argument("--proxy-server='direct://'")
-#     chrome_options.add_argument("--proxy-bypass-list=*")
-#     # gdd = ChromeDriverManager()
-#     # gdd.download_and_install()
-#     #         chrome_options.binary_location = GOOGLE_CHROME_PATH
-#     print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-#     browser = webdriver.Chrome(options=chrome_options)
-
-
 
 
 app = Flask(__name__)
 dic = {}
 
-
-@app.route('/test')
-def hello_world():
-    chrome_options = Options()
-    print(2)
-    chrome_options.add_argument("--headless")
-    print(2)
-    browser = webdriver.Chrome(options=chrome_options)
-    print(2)
-    try:
-        browser.get('http://www.google.com')
-        print(2)
-        return (browser.title)
-    finally:
-        browser.quit()
-
-# chrome_options = Options()
-# # chrome_options.add_argument("--headless")
-# chrome_options.add_argument('--no-proxy-server')
-# chrome_options.add_argument("--proxy-server='direct://'")
-# chrome_options.add_argument("--proxy-bypass-list=*")
-# # gdd = ChromeDriverManager()
-# # gdd.download_and_install()
-# #         chrome_options.binary_location = GOOGLE_CHROME_PATH
-# print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-# browser = webdriver.Chrome(options=chrome_options)
-
-
 @app.route('/',methods=['POST'])
 def getcaption(  ):
     try:
+
         json_data = request.json
+        plateNumber = json_data['nameplateno']
+    except:
+        return jsonify({'msg': "Wrong Format"}), 200
+
+
+    try:
          # browser = webdriver.Chrome(options=chrome_options)
         # global browser
-        browser = data.browser
-        browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
-        plateNumber =json_data['nameplateno']
+        print( data.id )
+        print(data.store[data.id])
+        print(2)
+        browser = data.store[data.id]
+        print(2)
+        try:
+            browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+        except:
+            print('break')
+            browser = data.new()
+            browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
+
+        print(3)
 
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no1"]').send_keys(plateNumber[:-4])
         browser.find_element_by_xpath('//*[@id="form_rcdl:tf_reg_no2"]').send_keys(plateNumber[-4:])
         captcha = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:j_idt37"]')
+        print(4)
         img_captcha_base64 = browser.execute_async_script("""
              var ele = arguments[0], callback = arguments[1];
              ele.addEventListener('load', function fn(){
@@ -192,40 +170,44 @@ def getcaption(  ):
              """, captcha)
 
 
-        # print(sys. getsizeof(browser))
+        print(1)
         # browser.quit()
-        # xxx.id+=1
-        # if(xxx.id>=100):
-        #     xxx.id = 0
+        data.id+=1
+        if(data.id>=4):
+            data.id = 1
         # dic[xxx.id] = browser
         # browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys("ans")
         # browser.find_element_by_class_name("ui-button-text").click()
-        data.browser = browser
-        return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str("xxx.id" )}),200
+        data.store[data.id-1] = browser
+        return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str(data.id-1)}),200
     except Exception as e :
             return jsonify({'msg': str(e)}), 200
 
 
 @app.route('/getdata',methods=['POST'])
 def getdata():
-    print(111)
+    print(data.store)
     try:
         json_data = request.json
-
         a_value = int(json_data["id"])
+    except Exception as e :
+        return jsonify({'msg': "Wrong Format"}), 200
+
+
+    try:
         ans =  str(json_data["ans"])
         print( ans)
         if (a_value < 0 or a_value > 100):
             raise Exception("Wronge id")
 
-        # if (dic[a_value] == 0):
-        #     raise Exception("Wronge id")
+        if (data.store[a_value] == 0):
+            raise Exception("Wronge id")
 
         if (ans == ""):
             raise Exception("Wronge ans")
 
         # global browser
-        browser = data.browser
+        browser = data.store[a_value]
         print(browser.title)
 
         browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt32:CaptchaID"]').send_keys(ans)
@@ -254,7 +236,7 @@ def getdata():
         nocDetails = ""
 
         try:
-            x = WebDriverWait(browser, 2).until(
+            x = WebDriverWait(browser, 3).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]')))
         except TimeoutException:
             raise  Exception('Invalid Car Number Plate!')
@@ -329,6 +311,9 @@ def getdata():
         except:
             pass
 
+        # data.store[a_value].close()
+        # data.store[a_value] = 0
+
         return jsonify({'msg': str(a_value),
                         'registrationNumber':registrationNumber,
                         'registrationDate':registrationDate,
@@ -345,15 +330,27 @@ def getdata():
                         'nocDetails':nocDetails
                         }), 200
     except Exception as e :
+        try:
+            data.store[a_value].close()
+        except:
+            pass
+
+        # data.store[a_value] = 0
         return jsonify({'msg': str(e)}), 200
 def shutdownlitener():
-    data.browser.close()
+    for i in range(5):
+        try:
+            data.store[i].close()
+        except:
+            pass
+
 
 
 if __name__ == '__main__':
 
-    for i in range(101):
+    for i in range(4):
         data.store[i] = data.new()
+    print(data.store)
     # print(dic)
     # chrome_options = Options()
     # # chrome_options.add_argument("--headless")

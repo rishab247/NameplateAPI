@@ -16,15 +16,11 @@ class dataclass:
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
-    print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
-    browser = webdriver.Chrome(options=chrome_options)
+    # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
+    # browser = webdriver.Chrome(options=chrome_options)
     store = {}
     id =0
 
     def new(self):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument('--no-proxy-server')
-        chrome_options.add_argument("--proxy-server='direct://'")
-        chrome_options.add_argument("--proxy-bypass-list=*")
-        return webdriver.Chrome(options=chrome_options)
+
+        return webdriver.Chrome(options=self.chrome_options)
