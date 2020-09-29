@@ -14,7 +14,7 @@ browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
 
 print('Opening URL...')
 
-plateNumber = "MH12DE1433"
+plateNumber = "MH01AE8017"
 captchaAnswer = ""
 
 print('Plate Number:', plateNumber)
@@ -43,7 +43,7 @@ registrationNumber = ""
 registrationDate = ""
 chassisNumber = ""
 engineNumber = ""
-OwnerName = ""
+ownerName = ""
 vehicleClass = ""
 fuelType = ""
 makerOrModel = ""
@@ -62,25 +62,28 @@ except:
     print('An Error Occurred!')
     os._exit(0)
 
-registrationNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]').text
-registrationDate = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[4]').text
-chassisNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[2]').text
-engineNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[4]').text
-OwnerName = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[3]/td[2]').text
-vehicleClass = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[2]').text
-fuelType = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[4]').text
-makerOrModel = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[5]/td[2]').text
-fitnessUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[2]').text
-insuranceUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[4]').text
-fuelNorms = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[2]').text
-roadTaxPaidUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[4]').text
-nocDetails = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[8]/td[2]').text
+try:
+    registrationNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[2]').text
+    registrationDate = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[1]/td[4]').text
+    chassisNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[2]').text
+    engineNumber = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[2]/td[4]').text
+    ownerName = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[3]/td[2]').text
+    vehicleClass = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[2]').text
+    fuelType = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[4]/td[4]').text
+    makerOrModel = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[5]/td[2]').text
+    fitnessUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[2]').text
+    insuranceUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[6]/td[4]').text
+    fuelNorms = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[2]').text
+    roadTaxPaidUpto = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[7]/td[4]').text
+    nocDetails = browser.find_element_by_xpath('//*[@id="form_rcdl:j_idt65"]/table/tbody/tr[8]/td[2]').text
+except:
+    pass
 
 print(registrationNumber)
 print(registrationDate)
 print(chassisNumber)
 print(engineNumber)
-print(OwnerName)
+print(ownerName)
 print(vehicleClass)
 print(fuelType)
 print(makerOrModel)
