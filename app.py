@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from data import dataclass as datad
-data = datad()
+from data import dataclass as data
+# data = datad()
 # from selenium import webdriver
 import base64
 import urllib.request
@@ -151,7 +151,7 @@ def getcaption(  ):
             browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
         except:
             print('break')
-            browser = data.new()
+            browser = data.new(data)
             browser.get('https://parivahan.gov.in/rcdlstatus/vahan/rcDlHome.xhtml')
 
         # print(3)
@@ -193,7 +193,7 @@ def getcaption(  ):
 
 @app.route('/getdata',methods=['POST'])
 def getdata():
-    print(data.store)
+    # print(data.store)
     try:
         json_data = request.json
         a_value = int(json_data["id"])
@@ -345,7 +345,8 @@ def getdata():
         # data.store[a_value] = 0
         return jsonify({'msg': str(e)}), 200
 def shutdownlitener():
-    for i in range(5):
+
+    for i in range(4):
         try:
             data.store[i].close()
         except:
@@ -356,7 +357,7 @@ def shutdownlitener():
 if __name__ == '__main__':
 
     for i in range(3):
-        data.store[i] = data.new()
+        data.store[i] = data.new(data)
     print(data.store)
     # print(dic)
     # chrome_options = Options()
