@@ -1,9 +1,11 @@
+
 waitress==1.4.4
 gunicorn
 absl-py==0.10.0
 appdirs==1.4.4
 asgiref==3.2.10
 astunparse==1.6.3
+bs4==0.0.1
 cachelib==0.1
 cachetools==4.1.1
 certifi==2020.4.5.2
@@ -16,6 +18,7 @@ configparser==5.0.0
 crayons==0.4.0
 cryptography==2.9.2
 cycler==0.10.0
+Django==3.0.8
 dnspython==1.16.0
 Flask==1.1.2
 Flask-Session==0.3.2
