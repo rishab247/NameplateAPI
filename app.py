@@ -128,14 +128,14 @@ dic = {}
 
 @app.route('/',methods=['POST'])
 def getcaption(  ):
-    if (data.id == 3):
+    if (data.id == 2):
         data.id = 0
     try:
 
         json_data = request.json
         plateNumber = json_data['nameplateno']
     except:
-        return jsonify({'msg': "Wrong Format"}), 200
+        return jsonify({'msg': "Wrong Format"}), 500
 
 
     try:
@@ -178,7 +178,7 @@ def getcaption(  ):
         data.store[data.id] = browser
 
         # data.id+=1
-        if(data.id==3):
+        if(data.id==2):
             data.id = 1
         else:
             data.id += 1
@@ -188,7 +188,7 @@ def getcaption(  ):
         # browser.find_element_by_class_name("ui-button-text").click()
         return jsonify({ 'msg' : str(img_captcha_base64)[1:] , 'id' : str(data.id-1)}),200
     except Exception as e :
-            return jsonify({'msg': 'error: '+ str(e)}), 200
+            return jsonify({'msg': 'error: '+ str(e)}), 500
 
 
 @app.route('/getdata',methods=['POST'])
@@ -198,7 +198,7 @@ def getdata():
         json_data = request.json
         a_value = int(json_data["id"])
     except Exception as e :
-        return jsonify({'msg': "Wrong Format"}), 200
+        return jsonify({'msg': "Wrong Format"}), 500
 
 
     try:
@@ -337,13 +337,13 @@ def getdata():
                         'nocDetails':nocDetails
                         }), 200
     except Exception as e :
-        try:
-            data.store[a_value].close()
-        except:
-            pass
+        # try:
+        #     data.store[a_value].close()
+        # except:
+        #     pass
 
         # data.store[a_value] = 0
-        return jsonify({'msg': str(e)}), 200
+        return jsonify({'msg': str(e)}), 500
 def shutdownlitener():
 
     for i in range(4):
@@ -356,7 +356,7 @@ def shutdownlitener():
 
 if __name__ == '__main__':
 
-    for i in range(3):
+    for i in range(2):
         data.store[i] = data.new(data)
     print(data.store)
     # print(dic)
