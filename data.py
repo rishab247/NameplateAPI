@@ -16,6 +16,9 @@ class dataclass:
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument("--proxy-server='direct://'")
     chrome_options.add_argument("--proxy-bypass-list=*")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--remote-debugging-port=9222")
     # print(os.path.join(os.path.join(os.path.dirname(__file__), 'driver'), 'chromedriver.exe'))
     # browser = webdriver.Chrome(options=chrome_options)
     store = {}

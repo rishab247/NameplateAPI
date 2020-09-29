@@ -214,6 +214,7 @@ def getdata():
             raise Exception("Wronge ans")
 
         # global browser
+        print(a_value)
         browser = data.store[a_value]
         print(browser.title)
 
@@ -358,7 +359,7 @@ if __name__ == '__main__':
 
     for i in range(2):
         data.store[i] = data.new(data)
-    print(data.store)
+    # print(data.store)
     # print(dic)
     # chrome_options = Options()
     # # chrome_options.add_argument("--headless")
